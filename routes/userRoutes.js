@@ -5,7 +5,7 @@
 
 import e from "express";
 const router = e.Router();
-import { login, register, reVerify, varify ,logout, forgotPassword, verifyOTP, changePassword, allUser, updateProfile, } from "../controllers/userController.js";
+import { login, register, reVerify, varify ,logout, forgotPassword, verifyOTP, changePassword, allUser, updateProfile, getUserById, updateUser } from "../controllers/userController.js";
 import { isAuthenticated } from "../middleware/isAuthenticated.js";
 import { isAdmin } from "../middleware/isAdmin.js";
 import { singleupload } from "../middleware/multer.js";
@@ -22,7 +22,7 @@ router.post('/verifyotp/:email' ,verifyOTP)
 router.post('/changePassword/:email' ,changePassword)
 router.get('/all-user' ,isAuthenticated, isAdmin, allUser)
 router.get('/users/:id' , isAuthenticated, getUserById) // Corrected route for fetching a single user by ID
-router.put('/update/:id' ,isAuthenticated , singleupload )
+router.put('/update/:id' ,isAuthenticated , singleupload, updateUser )
 
 // aaj
 
