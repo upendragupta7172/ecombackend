@@ -25,27 +25,7 @@ app.use(express.json());
 
 
 
-// Multiple origins ko support karne ke liye array banayein
-// const allowedOrigins = [
-//   "https://ecom-git-main-upendra-guptas-projects.vercel.app", // ✅ frontend
-//   "http://localhost:5173",                         // Development (Vite)
-//   "http://localhost:800"                           // Development (Agar port 800 use kar rahe ho)
-// ];
 
-// app.use(cors({
-//   origin: function (origin, callback) {
-//     // Allow requests with no origin (like mobile apps or Postman)
-//     if (!origin) return callback(null, true);
-    
-//     if (allowedOrigins.indexOf(origin) !== -1) {
-//       callback(null, true);
-//     } else {
-//       callback(new Error('Not allowed by CORS'));
-//     }
-//   },
-//   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-//   credentials: true
-// }));
 
 
 
