@@ -33,6 +33,7 @@ export const register = async (req, res) => {
 
         return res.json({ success : true ,message: "Registered successfully. Please verify email.", user: { id: user._id, email: user.email } });
     } catch (error) {
+        console.error("Register Error:", error);
         res.status(500).json({ error: error.message });
     }
 };
@@ -53,6 +54,7 @@ export const varify = async (req, res) => {
 
         return res.status(200).json({ success: true, message: "Account verified successfully!" });
     } catch (error) {
+        console.error("Verify Email Error:", error);
         return res.status(401).json({ success: false, message: "Invalid or expired token" });
     }
 };
@@ -86,6 +88,7 @@ export const login = async (req, res) => {
             user: userResponse
         });
     } catch (error) {
+        console.error("Login Error:", error);
         return res.status(500).json({ success: false, message: error.message });
     }
 };
@@ -115,6 +118,7 @@ export const reVerify = async (req, res) => {
 
         res.json({ success: true, message: "New verification link sent!" });
     } catch (error) {
+        console.error("Reverify Error:", error);
         res.status(500).json({ message: error.message });
     }
 };
@@ -137,6 +141,7 @@ export const logout = async (req, res) => {
         });
 
     } catch (error) {
+        console.error("Logout Error:", error);
         return res.status(500).json({
             success: false,
             message: error.message
@@ -177,6 +182,7 @@ export const forgotPassword = async (req, res) => {
         });
 
     } catch (error) {
+        console.error("Forgot Password Error:", error);
         return res.status(500).json({
             success: false,
             message: error.message
@@ -236,6 +242,7 @@ export const verifyOTP = async (req, res) => {
         });
 
     } catch (error) {
+        console.error("Verify OTP Error:", error);
         return res.status(500).json({
             success: false,
             message: error.message
@@ -287,6 +294,7 @@ export const changePassword = async (req, res) => {
         });
 
     } catch (error) {
+        console.error("Change Password Error:", error);
         return res.status(500).json({
             success: false,
             message: error.message
@@ -303,6 +311,7 @@ export const allUser = async (_, res) => {
             users
         });
     } catch (error) {
+        console.error("All Users Error:", error);
         return res.status(500).json({
             success: false,
             message: error.message
@@ -335,6 +344,7 @@ export const getUserById = async (req, res) => {
         });
 
     } catch (error) {
+        console.error("Get User By ID Error:", error);
         return res.status(500).json({
             success: false,
             message: "Invalid ID format or Server Error"
@@ -460,6 +470,7 @@ export const updateProfile = async (req, res) => {
     });
 
   } catch (error) {
+    console.error("Update Profile Error:", error);
     res.status(500).json({ success: false, message: error.message });
   }
 };

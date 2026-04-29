@@ -21,7 +21,7 @@ router.post('/forgetpassword' ,forgotPassword)
 router.post('/verifyotp/:email' ,verifyOTP)
 router.post('/changePassword/:email' ,changePassword)
 router.get('/all-user' ,isAuthenticated, isAdmin, allUser)
-router.get('/all-user/:userid' , allUser)
+router.get('/users/:id' , isAuthenticated, getUserById) // Corrected route for fetching a single user by ID
 router.put('/update/:id' ,isAuthenticated , singleupload )
 
 // aaj
@@ -33,6 +33,3 @@ router.put("/profile/update", isAuthenticated, updateProfile);
 
 
 export default router;
-
-
-
