@@ -32,7 +32,7 @@ app.use(express.json());
 
 // Multiple origins ko support karne ke liye array banayein
 const allowedOrigins = [
-  "https://e-commerce-project-xi-blush.vercel.app", // Production
+  "https://ecombackend-8yfl.onrender.com", // Production
   "http://localhost:5173",                         // Development (Vite)
   "http://localhost:800"                           // Development (Agar port 800 use kar rahe ho)
 ];
