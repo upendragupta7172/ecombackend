@@ -41,7 +41,7 @@ export const register = async (req, res) => {
 // --- VERIFY EMAIL ---
 export const varify = async (req, res) => {
     try {
-        // Frontend se token params mein aata hai ya header mein, hum dono handle kar rahe hain
+        // Handle token from params or Authorization header
         const token = req.params.token || req.headers.authorization?.split(" ")[1];
 
         if (!token) return res.status(401).json({ success: false, message: "Token missing" });
@@ -73,13 +73,23 @@ export const login = async (req, res) => {
 
         if (!user.isVerified) return res.status(400).json({ success: false, message: "Please verify email first" });
 
+        if (!process.env.JWT_SECRET) {
+            console.error("FATAL ERROR: JWT_SECRET is not defined.");
+            return res.status(500).json({ success: false, message: "Internal server configuration error" });
+        }
+
         const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: "1d" });
 
         // Password hide karke response bhejna
         const userResponse = await User.findById(user._id).select("-password");
 
-        // Cookie mein save karna optional but better for security
-        res.cookie("token", token, { httpOnly: true, sameSite: 'strict', maxAge: 24 * 60 * 60 * 1000 });
+        // Security: Use 'secure: true' in production for HTTPS
+        res.cookie("token", token, { 
+            httpOnly: true, 
+            sameSite: 'strict', 
+            secure: process.env.NODE_ENV === 'production', 
+            maxAge: 24 * 60 * 60 * 1000 
+        });
 
         return res.status(200).json({
             success: true,

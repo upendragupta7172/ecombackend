@@ -12,7 +12,7 @@ import { singleupload } from "../middleware/multer.js";
 import { getMyOrders } from "../controllers/orderController.js";
 
 router.post('/registeruser', register);
-router.post('/varify', varify);
+router.post('/varify/:token?', varify); // Added optional param to match controller logic
 router.post('/reverify', reVerify);
 router.post('/login', login);
 router.post("/logout", isAuthenticated , logout)
