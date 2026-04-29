@@ -1,82 +1,67 @@
 
-import  nodemailer from 'nodemailer'
-import 'dotenv/config'
-
-// export const verifyemail = (token , email)=>{
+// import  nodemailer from 'nodemailer'
+// import 'dotenv/config'
 
 
-// const transporter = nodemailer.createTransport({
+
+
+
+
+
+
+
+// export const verifyemail = (token, email) => {
+//   const transporter = nodemailer.createTransport({
 //     service: 'gmail',
 //     auth: {
-//         user:process.env.MAIL_USER,
-//         pass: process.env.MAIL_PASS
+//       user: process.env.MAIL_USER,
+//       pass: process.env.MAIL_PASS
 //     }
-// });
+//   });
 
-// // const token = jwt.sign({
-// //         data: 'Token Data'  .
-// //     }, 'ourSecretKey', { expiresIn: '10m' }  
-// // );    
-
-// const mailConfigurations = {
-
-//     // It should be a string of sender/server email
+//   const mailConfigurations = {
 //     from: process.env.MAIL_USER,
-
-//     to: 'email',
-
-//     // Subject of Email
+//     to: email, // FIX: Quotes hatayein, variable use karein
 //     subject: 'Email Verification',
-    
-//     // This would be the text of email body
-//     text: `Hi! There, You have recently visited 
-//            our website and entered your email.
-//            Please follow the given link to verify your email
-//            http://localhost:5173/verify/${token} 
-//            Thanks`
+//     text: `Hi! Please verify your email: http://localhost:5173/varify/${token}`
+//   };
+
+//   transporter.sendMail(mailConfigurations, function (error, info) {
+//     if (error) {
+//       console.log("Email Error:", error); // Server crash nahi hoga
+//     } else {
+//       console.log('Email Sent Successfully');
+//     }
+//   });
 // };
 
-// transporter.sendMail(mailConfigurations, function(error, info){
-//     if (error) throw Error(error);
-//     console.log('Email Sent Successfully');
-//     console.log(info);
-// });
-
-    
 
 
 
+import nodemailer from 'nodemailer';
+import 'dotenv/config';
 
-// }
+export const verifyemail = async (token, email) => {
+  try {
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.MAIL_USER,
+        pass: process.env.MAIL_PASS
+      }
+    });
 
+    const mailConfigurations = {
+      from: process.env.MAIL_USER,
+      to: email,
+      subject: 'Email Verification',
+      text: `Hi! Please verify your email: https://ecom-git-main-upendra-guptas-projects.vercel.app/varify/${token}`
+    };
 
+    const info = await transporter.sendMail(mailConfigurations);
+    console.log("Email sent:", info.response);
 
-
-
-
-
-
-export const verifyemail = (token, email) => {
-  const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: process.env.MAIL_USER,
-      pass: process.env.MAIL_PASS
-    }
-  });
-
-  const mailConfigurations = {
-    from: process.env.MAIL_USER,
-    to: email, // FIX: Quotes hatayein, variable use karein
-    subject: 'Email Verification',
-    text: `Hi! Please verify your email: http://localhost:5173/varify/${token}`
-  };
-
-  transporter.sendMail(mailConfigurations, function (error, info) {
-    if (error) {
-      console.log("Email Error:", error); // Server crash nahi hoga
-    } else {
-      console.log('Email Sent Successfully');
-    }
-  });
+  } catch (error) {
+    console.log("Email Error:", error.message);
+  }
 };
