@@ -22,11 +22,6 @@ const app = express();
 app.use(cookieParser());
 app.use(express.json());
 
-// app.use(cors({
-//   origin: "https://e-commerce-project-xi-blush.vercel.app", 
-//   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-//   credentials: true
-// }));
 
 
 
