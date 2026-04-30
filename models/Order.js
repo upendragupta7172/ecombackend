@@ -1,31 +1,3 @@
-// import mongoose from "mongoose";
-
-// const orderSchema = new mongoose.Schema({
-//     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-//     orderItems: [
-//         {
-//             name: { type: String, required: true },
-//             qty: { type: Number, required: true },
-//             image: { type: String, required: true },
-//             price: { type: Number, required: true },
-//             product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true },
-//         }
-//     ],
-//     shippingAddress: {
-//         address: { type: String, required: true },
-//         city: { type: String, required: true },
-//         zipCode: { type: String, required: true },
-//     },
-//     paymentMethod: { type: String, default: "Razorpay" },
-//     totalPrice: { type: Number, required: true },
-//     isPaid: { type: Boolean, default: true },
-//     paidAt: { type: Date, default: Date.now },
-// }, { timestamps: true });
-
-// export const Order = mongoose.model("Order", orderSchema);
-
-
-// AAJ
 import mongoose from "mongoose";
 
 const orderSchema = new mongoose.Schema(
@@ -33,18 +5,34 @@ const orderSchema = new mongoose.Schema(
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
+      required: true,
     },
-
     products: [
       {
         productId: {
           type: mongoose.Schema.Types.ObjectId,
           ref: "Product",
+          required: true,
         },
-        quantity: Number,
+        quantity: {
+          type: Number,
+          required: true,
+          min: 1,
+        },
       },
     ],
-
+    totalAmount: {
+      type: Number,
+      default: 0,
+    },
+    paymentId: {
+      type: String,
+      default: "",
+    },
+    razorpayOrderId: {
+      type: String,
+      default: "",
+    },
     status: {
       type: String,
       enum: [
@@ -53,7 +41,7 @@ const orderSchema = new mongoose.Schema(
         "Shipped",
         "Out for Delivery",
         "Delivered",
-        "Cancelled"
+        "Cancelled",
       ],
       default: "Processing",
     },

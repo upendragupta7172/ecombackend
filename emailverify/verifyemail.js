@@ -42,20 +42,35 @@ import nodemailer from 'nodemailer';
 import 'dotenv/config';
 
 export const verifyemail = async (token, email) => {
+  const user = process.env.MAIL_USER?.trim();
+  const pass = process.env.MAIL_PASS?.trim();
+
+  console.log("Attempting to send email to:", email);
+  if (!user || !pass) {
+    console.error("❌ MAIL_USER or MAIL_PASS is missing in environment variables!");
+    return;
+  }
+
   try {
     const transporter = nodemailer.createTransport({
-      service: 'gmail',
       host: 'smtp.gmail.com',
       port: 465,
-      secure: true,
+      secure: true, // Use SSL
       auth: {
-        user: process.env.MAIL_USER, // e.g. "yourname@gmail.com"
-        pass: process.env.MAIL_PASS  // ⚠️ Use 16-digit APP PASSWORD, not regular password
+        user: user,
+        pass: pass
       }
     });
 
-    const mailConfigurations = {
-      from: process.env.MAIL_USER,
+    // Check if connection is successful
+    await transporter.verify().then(() => {
+      console.log("Connected to Gmail SMTP server");
+    }).catch((err) => {
+      console.error("SMTP Connection Error:", err);
+    });
+
+    const mailOptions = {
+      from: `"Upendra Store" <${user}>`,
       to: email,
       subject: 'Account Verification - Upendra Store',
       html: `
@@ -65,9 +80,10 @@ export const verifyemail = async (token, email) => {
       `
     };
 
-    const info = await transporter.sendMail(mailConfigurations);
-    console.log("Email sent:", info.response);
+    const info = await transporter.sendMail(mailOptions);
+    console.log("✅ Email sent successfully:", info.response);
   } catch (error) {
-    console.error("❌ Nodemailer Error:", error);
+    console.error("❌ Nodemailer Error details:");
+    console.error(error);
   }
 };
