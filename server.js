@@ -31,6 +31,7 @@ app.use(express.json());
 
 const allowedOrigins = [
   "https://ecom-git-main-upendra-guptas-projects.vercel.app", // ✅ frontend
+  "https://ecom-psi-bay.vercel.app",
   "http://localhost:5173",
   "http://localhost:800"
 ];
@@ -69,4 +70,3 @@ app.listen(PORT, () => {
 
 
 // // TODAY
-
