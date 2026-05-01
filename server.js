@@ -7,8 +7,6 @@ import productRouter from './routes/productRoutes.js';
 import cartRoutes from "./routes/cartRoutes.js";
 // ✅ 1. PAYMENT ROUTE IMPORT KAREIN
 import paymentRoutes from "./routes/paymentRoutes.js"; 
-// import orderRouter from "./routes/orderRoutes.js"; // Naya router import
-
 import orderRouter from "./routes/orderRoutes.js";
 
 import cookieParser from 'cookie-parser';
@@ -54,7 +52,6 @@ app.use(cors({
 app.use('/api/user', userRouter);
 app.use('/api/user/product', productRouter);
 app.use('/api/v1/cart', cartRoutes);
-// app.use("/api/v1/orders", orderRouter);
 
 // ✅ 3. SAHI NAAM SE REGISTER KAREIN
 // (Ye line aapke URL ke '/api/v1/payment' part ko handle karegi)
