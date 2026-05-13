@@ -15,7 +15,8 @@ app.use(cookieParser());
 app.use(express.json());
 
 const allowedOrigins = [
-  "https://ecom-git-main-upendra-guptas-projects.vercel.app",
+  // "https://ecom-git-main-upendra-guptas-projects.vercel.app",
+  "https://ecom-git-main-upendra-guptas-projects.vercel.app/",
   "https://ecom-psi-bay.vercel.app",
   "http://localhost:5173",
   "http://localhost:800",
