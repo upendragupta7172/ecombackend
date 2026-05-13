@@ -21,7 +21,7 @@ export const register = async (req, res) => {
         if (existingUser) return res.status(400).json({ message: "User already exists" });
 
         const hashedPassword = await bcrypt.hash(password, 10);
-        const user = await User.create({ firstName, lastName, email, password: hashedPassword });
+        const user = new User({ firstName, lastName, email, password: hashedPassword });
 
         // Email Verification Token (10 days expiry logic consistent rakha hai)
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '10d' });
@@ -34,7 +34,8 @@ export const register = async (req, res) => {
         return res.json({ success : true ,message: "Registered successfully. Please verify email.", user: { id: user._id, email: user.email } });
     } catch (error) {
         console.error("Register Error:", error);
-        res.status(500).json({ error: error.message });
+        const statusCode = error.isEmailError ? 502 : 500;
+        res.status(statusCode).json({ success: false, message: error.message });
     }
 };
 
@@ -129,7 +130,8 @@ export const reVerify = async (req, res) => {
         res.json({ success: true, message: "New verification link sent!" });
     } catch (error) {
         console.error("Reverify Error:", error);
-        res.status(500).json({ message: error.message });
+        const statusCode = error.isEmailError ? 502 : 500;
+        res.status(statusCode).json({ success: false, message: error.message });
     }
 };
 
@@ -178,13 +180,12 @@ export const forgotPassword = async (req, res) => {
         // 10 minutes ki expiry set karna
         const otpExpiry = new Date(Date.now() + 10 * 60 * 1000); 
 
-        user.otp = otp;
-        user.otpExpiry = otpExpiry;
-
-        await user.save();
-        
         // Email bhejne ka function call
         await sendOTPMail(otp, email);
+
+        user.otp = otp;
+        user.otpExpiry = otpExpiry;
+        await user.save();
 
         return res.status(200).json({
             success: true,
@@ -193,7 +194,8 @@ export const forgotPassword = async (req, res) => {
 
     } catch (error) {
         console.error("Forgot Password Error:", error);
-        return res.status(500).json({
+        const statusCode = error.isEmailError ? 502 : 500;
+        return res.status(statusCode).json({
             success: false,
             message: error.message
         });

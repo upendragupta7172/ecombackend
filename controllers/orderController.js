@@ -38,27 +38,36 @@ export const updateOrderStatus = async (req, res) => {
       "Out for Delivery",
       "Delivered",
     ];
+    let emailWarning = null;
 
     if (sendMailStatuses.includes(status) && order.userId?.email) {
       const customerName =
         [order.userId.firstName, order.userId.lastName].filter(Boolean).join(" ") ||
         "Customer";
 
-      await sendEmail(
-        order.userId.email,
-        "Order Status Update",
-        `Hello ${customerName},
+      try {
+        await sendEmail(
+          order.userId.email,
+          "Order Status Update",
+          `Hello ${customerName},
 
 Your order status has been updated to: ${status}
 
 Thank you for shopping with us!`
-      );
+        );
+      } catch (error) {
+        emailWarning = error.message;
+        console.error("Order status email failed:", error.message);
+      }
     }
 
     return res.status(200).json({
       success: true,
-      message: "Order status updated",
+      message: emailWarning
+        ? "Order status updated, but the email notification could not be sent."
+        : "Order status updated",
       order,
+      ...(emailWarning ? { emailWarning } : {}),
     });
   } catch (error) {
     return res.status(500).json({
